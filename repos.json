@@ -6,6 +6,7 @@
     "gh-pin-repo",
     "config",
     "cli",
+    "bot",
     "license",
     "warnings",
     "json-repo",
