@@ -1,0 +1,16 @@
+{
+  "repos": [
+    "general",
+    "react-template", 
+    "swe-agent",
+    "gh-pin-repo",
+    "config",
+    "cli",
+    "license",
+    "warnings",
+    "json-repo",
+    "gitkeep",
+    ".github"
+  ],
+  "org": "emberlamp"
+}
