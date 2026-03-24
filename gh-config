@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# gh config - Get configuration values from emberlamp/config
+# Usage: gh config <key>
+
+set -e
+
+CONFIG_REPO="emberlamp/config"
+CONFIG_FILE="config.json"
+
+# Get config value
+get_config() {
+    local key="$1"
+    local raw=$(gh api repos/"$CONFIG_REPO"/contents/"$CONFIG_FILE" --jq '.content' | base64 -d 2>/dev/null)
+    if [ -z "$raw" ]; then
+        # Fallback: try to get from raw URL
+        raw=$(curl -s "https://raw.githubusercontent.com/$CONFIG_REPO/main/$CONFIG_FILE" 2>/dev/null)
+    fi
+    echo "$raw" | grep -o "\"$key\":[^,}]*" | cut -d'"' -f3-
+}
+
+# List all keys
+list_keys() {
+    local raw=$(curl -s "https://raw.githubusercontent.com/$CONFIG_REPO/main/$CONFIG_FILE" 2>/dev/null)
+    echo "$raw" | grep -o '"[^"]*":' | tr -d '":'
+}
+
+# Main
+case "$1" in
+    --help|-h)
+        echo "gh config - Get configuration from emberlamp/config"
+        echo ""
+        echo "Usage:"
+        echo "  gh config <key>        Get config value"
+        echo "  gh config --list       List all config keys"
+        echo ""
+        echo "Example:"
+        echo "  gh config warningsEnabled"
+        echo "  gh config --list"
+        ;;
+    --list|-l)
+        list_keys
+        ;;
+    "")
+        echo "Error: No key specified"
+        echo "Run 'gh config --help' for usage"
+        exit 1
+        ;;
+    *)
+        get_config "$1"
+        ;;
+esac

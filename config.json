@@ -1,0 +1,10 @@
+{
+  "warningsEnabled": true,
+  "pinRepoEnabled": false,
+  "defaultOrg": "emberlamp",
+  "features": {
+    "autoPin": false,
+    "autoLicense": true,
+    "autoReadme": true
+  }
+}
